@@ -1,4 +1,4 @@
-// All test hashes were calculated using the RIPEMD-160 function in the linux Openssl binary.
+// All test hashes were calculated using the RIPEMD-160 function from the linux Openssl binary.
 #[cfg(test)]
 mod tests {
     use ripemd160::ripemd160::{RIPEMD160Context, ripemd160_hash, ripemd160_context_as_u256};

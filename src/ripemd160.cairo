@@ -1,5 +1,6 @@
 use ripemd160::utils::{
-    POW_2_32, POW_2_8, get_pow_2, bytes_to_u32, leftrotate, u32_mod_add, byte_swap_u32
+    POW_2_32, POW_2_8, get_pow_2, bytes_to_u32_swap, u32_leftrotate, u32_mod_add, u32_mod_add_3,
+    u32_mod_add_4, u32_byte_swap
 };
 
 const BLOCK_SIZE: u32 = 64;
@@ -53,63 +54,63 @@ fn j(x: u32, y: u32, z: u32) -> u32 {
 }
 
 fn l1(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(f(b, c, d), x));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_3(a, f(b, c, d), x);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn l2(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(g(b, c, d), u32_mod_add(x, 0x5a827999)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, g(b, c, d), x, 0x5a827999);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn l3(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(h(b, c, d), u32_mod_add(x, 0x6ed9eba1)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, h(b, c, d), x, 0x6ed9eba1);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn l4(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(i(b, c, d), u32_mod_add(x, 0x8f1bbcdc)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, i(b, c, d), x, 0x8f1bbcdc);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn l5(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(j(b, c, d), u32_mod_add(x, 0xa953fd4e)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, j(b, c, d), x, 0xa953fd4e);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn r1(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(j(b, c, d), u32_mod_add(x, 0x50a28be6)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, j(b, c, d), x, 0x50a28be6);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn r2(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(i(b, c, d), u32_mod_add(x, 0x5c4dd124)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, i(b, c, d), x, 0x5c4dd124);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn r3(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(h(b, c, d), u32_mod_add(x, 0x6d703ef3)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, h(b, c, d), x, 0x6d703ef3);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn r4(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(g(b, c, d), u32_mod_add(x, 0x7a6d76e9)));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_4(a, g(b, c, d), x, 0x7a6d76e9);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 fn r5(ref a: u32, b: u32, ref c: u32, d: u32, e: u32, x: u32, s: u32) {
-    a = u32_mod_add(a, u32_mod_add(f(b, c, d), x));
-    a = u32_mod_add(leftrotate(a, s), e);
-    c = leftrotate(c, 10);
+    a = u32_mod_add_3(a, f(b, c, d), x);
+    a = u32_mod_add(u32_leftrotate(a, s), e);
+    c = u32_leftrotate(c, 10);
 }
 
 // RIPEMD-160 compression function
@@ -125,7 +126,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     let mut rh3 = ctx.h3;
     let mut rh4 = ctx.h4;
 
-    // Left Round 1
+    // Left round 1
     l1(ref lh0, lh1, ref lh2, lh3, lh4, *data.at(0), 11);
     l1(ref lh4, lh0, ref lh1, lh2, lh3, *data.at(1), 14);
     l1(ref lh3, lh4, ref lh0, lh1, lh2, *data.at(2), 15);
@@ -143,7 +144,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     l1(ref lh1, lh2, ref lh3, lh4, lh0, *data.at(14), 9);
     l1(ref lh0, lh1, ref lh2, lh3, lh4, *data.at(15), 8);
 
-    // Left Round 2
+    // Left round 2
     l2(ref lh4, lh0, ref lh1, lh2, lh3, *data.at(7), 7);
     l2(ref lh3, lh4, ref lh0, lh1, lh2, *data.at(4), 6);
     l2(ref lh2, lh3, ref lh4, lh0, lh1, *data.at(13), 8);
@@ -161,7 +162,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     l2(ref lh0, lh1, ref lh2, lh3, lh4, *data.at(11), 13);
     l2(ref lh4, lh0, ref lh1, lh2, lh3, *data.at(8), 12);
 
-    // Left Round 3
+    // Left round 3
     l3(ref lh3, lh4, ref lh0, lh1, lh2, *data.at(3), 11);
     l3(ref lh2, lh3, ref lh4, lh0, lh1, *data.at(10), 13);
     l3(ref lh1, lh2, ref lh3, lh4, lh0, *data.at(14), 6);
@@ -179,7 +180,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     l3(ref lh4, lh0, ref lh1, lh2, lh3, *data.at(5), 7);
     l3(ref lh3, lh4, ref lh0, lh1, lh2, *data.at(12), 5);
 
-    // Left Round 4
+    // Left round 4
     l4(ref lh2, lh3, ref lh4, lh0, lh1, *data.at(1), 11);
     l4(ref lh1, lh2, ref lh3, lh4, lh0, *data.at(9), 12);
     l4(ref lh0, lh1, ref lh2, lh3, lh4, *data.at(11), 14);
@@ -197,7 +198,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     l4(ref lh3, lh4, ref lh0, lh1, lh2, *data.at(6), 5);
     l4(ref lh2, lh3, ref lh4, lh0, lh1, *data.at(2), 12);
 
-    // Left Round 5
+    // Left round 5
     l5(ref lh1, lh2, ref lh3, lh4, lh0, *data.at(4), 9);
     l5(ref lh0, lh1, ref lh2, lh3, lh4, *data.at(0), 15);
     l5(ref lh4, lh0, ref lh1, lh2, lh3, *data.at(5), 5);
@@ -215,7 +216,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     l5(ref lh2, lh3, ref lh4, lh0, lh1, *data.at(15), 5);
     l5(ref lh1, lh2, ref lh3, lh4, lh0, *data.at(13), 6);
 
-    // Right Round 1
+    // Right round 1
     r1(ref rh0, rh1, ref rh2, rh3, rh4, *data.at(5), 8);
     r1(ref rh4, rh0, ref rh1, rh2, rh3, *data.at(14), 9);
     r1(ref rh3, rh4, ref rh0, rh1, rh2, *data.at(7), 9);
@@ -233,7 +234,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     r1(ref rh1, rh2, ref rh3, rh4, rh0, *data.at(3), 12);
     r1(ref rh0, rh1, ref rh2, rh3, rh4, *data.at(12), 6);
 
-    // Right Round 2
+    // Right round 2
     r2(ref rh4, rh0, ref rh1, rh2, rh3, *data.at(6), 9);
     r2(ref rh3, rh4, ref rh0, rh1, rh2, *data.at(11), 13);
     r2(ref rh2, rh3, ref rh4, rh0, rh1, *data.at(3), 15);
@@ -251,7 +252,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     r2(ref rh0, rh1, ref rh2, rh3, rh4, *data.at(1), 13);
     r2(ref rh4, rh0, ref rh1, rh2, rh3, *data.at(2), 11);
 
-    // Right Round 3
+    // Right round 3
     r3(ref rh3, rh4, ref rh0, rh1, rh2, *data.at(15), 9);
     r3(ref rh2, rh3, ref rh4, rh0, rh1, *data.at(5), 7);
     r3(ref rh1, rh2, ref rh3, rh4, rh0, *data.at(1), 15);
@@ -269,7 +270,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     r3(ref rh4, rh0, ref rh1, rh2, rh3, *data.at(4), 7);
     r3(ref rh3, rh4, ref rh0, rh1, rh2, *data.at(13), 5);
 
-    // Right Round 4
+    // Right round 4
     r4(ref rh2, rh3, ref rh4, rh0, rh1, *data.at(8), 15);
     r4(ref rh1, rh2, ref rh3, rh4, rh0, *data.at(6), 5);
     r4(ref rh0, rh1, ref rh2, rh3, rh4, *data.at(4), 8);
@@ -287,7 +288,7 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     r4(ref rh3, rh4, ref rh0, rh1, rh2, *data.at(10), 15);
     r4(ref rh2, rh3, ref rh4, rh0, rh1, *data.at(14), 8);
 
-    // Right Round 5
+    // Right round 5
     r5(ref rh1, rh2, ref rh3, rh4, rh0, *data.at(12), 8);
     r5(ref rh0, rh1, ref rh2, rh3, rh4, *data.at(15), 5);
     r5(ref rh4, rh0, ref rh1, rh2, rh3, *data.at(10), 12);
@@ -306,18 +307,18 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, data: @Array<u32>) {
     r5(ref rh1, rh2, ref rh3, rh4, rh0, *data.at(11), 11);
 
     // Combine results
-    rh3 = u32_mod_add(ctx.h1, u32_mod_add(lh2, rh3));
-    ctx.h1 = u32_mod_add(ctx.h2, u32_mod_add(lh3, rh4));
-    ctx.h2 = u32_mod_add(ctx.h3, u32_mod_add(lh4, rh0));
-    ctx.h3 = u32_mod_add(ctx.h4, u32_mod_add(lh0, rh1));
-    ctx.h4 = u32_mod_add(ctx.h0, u32_mod_add(lh1, rh2));
+    rh3 = u32_mod_add_3(ctx.h1, lh2, rh3);
+    ctx.h1 = u32_mod_add_3(ctx.h2, lh3, rh4);
+    ctx.h2 = u32_mod_add_3(ctx.h3, lh4, rh0);
+    ctx.h3 = u32_mod_add_3(ctx.h4, lh0, rh1);
+    ctx.h4 = u32_mod_add_3(ctx.h0, lh1, rh2);
     ctx.h0 = rh3;
 }
 
 // Add RIPEMD-160 padding to the input.
 fn ripemd160_padding(ref data: ByteArray) {
     // Get message len in bits
-    let mut data_bits_len: u64 = data.len().into() * 8;
+    let mut data_bits_len: felt252 = data.len().into() * 8;
 
     // Append padding bit
     data.append_byte(0x80);
@@ -330,18 +331,7 @@ fn ripemd160_padding(ref data: ByteArray) {
     };
 
     // Add message len in little-endian
-    while (data_bits_len != 0) {
-        let byte: u8 = (data_bits_len % 256).try_into().unwrap();
-        data_bits_len = (data_bits_len / 256).try_into().unwrap();
-        data.append_byte(byte);
-    };
-
-    // Add zeroes to complete block
-    len = data.len();
-    while (len % BLOCK_SIZE != 0) {
-        data.append_byte(0);
-        len += 1;
-    }
+    data.append_word_rev(data_bits_len, 8);
 }
 
 // Update the context by processing the whole data.
@@ -353,12 +343,17 @@ fn ripemd160_update(ref ctx: RIPEMD160Context, data: ByteArray) {
         let mut block: Array<u32> = ArrayTrait::new();
         j = 0;
         while (j < BLOCK_SIZE) {
-            block.append(bytes_to_u32(@data, i));
+            block.append(bytes_to_u32_swap(@data, i));
             j += 4;
             i += 4;
         };
         ripemd160_process_block(ref ctx, @block);
     };
+    ctx.h0 = u32_byte_swap(ctx.h0);
+    ctx.h1 = u32_byte_swap(ctx.h1);
+    ctx.h2 = u32_byte_swap(ctx.h2);
+    ctx.h3 = u32_byte_swap(ctx.h3);
+    ctx.h4 = u32_byte_swap(ctx.h4);
 }
 
 // Init context with RIPEMD-160 constant.
@@ -371,43 +366,11 @@ fn ripemd160_init() -> RIPEMD160Context {
 // Return hash as bytes.
 pub fn ripemd160_context_as_bytes(ctx: @RIPEMD160Context) -> ByteArray {
     let mut result: ByteArray = Default::default();
-    let mask: u32 = 0x000000FF;
-
-    let mut value = *ctx.h0;
-    while (value >= POW_2_8) {
-        result.append_byte((value & mask).try_into().unwrap());
-        value = value / POW_2_8;
-    };
-    result.append_byte((value & mask).try_into().unwrap());
-
-    let mut value = *ctx.h1;
-    while (value >= POW_2_8) {
-        result.append_byte((value & mask).try_into().unwrap());
-        value = value / POW_2_8;
-    };
-    result.append_byte((value & mask).try_into().unwrap());
-
-    let mut value = *ctx.h2;
-    while (value >= POW_2_8) {
-        result.append_byte((value & mask).try_into().unwrap());
-        value = value / POW_2_8;
-    };
-    result.append_byte((value & mask).try_into().unwrap());
-
-    let mut value = *ctx.h3;
-    while (value >= POW_2_8) {
-        result.append_byte((value & mask).try_into().unwrap());
-        value = value / POW_2_8;
-    };
-    result.append_byte((value & mask).try_into().unwrap());
-
-    let mut value = *ctx.h4;
-    while (value >= POW_2_8) {
-        result.append_byte((value & mask).try_into().unwrap());
-        value = value / POW_2_8;
-    };
-    result.append_byte((value & mask).try_into().unwrap());
-
+    result.append_word((*ctx.h0).into(), 4);
+    result.append_word((*ctx.h1).into(), 4);
+    result.append_word((*ctx.h2).into(), 4);
+    result.append_word((*ctx.h3).into(), 4);
+    result.append_word((*ctx.h4).into(), 4);
     result
 }
 
@@ -425,15 +388,15 @@ pub fn ripemd160_context_as_array(ctx: @RIPEMD160Context) -> Array<u32> {
 // Return hash as u256.
 pub fn ripemd160_context_as_u256(ctx: @RIPEMD160Context) -> u256 {
     let mut result: u256 = 0;
-    result += byte_swap_u32(*ctx.h0).into();
+    result += (*ctx.h0).into();
     result *= POW_2_32.into();
-    result += byte_swap_u32(*ctx.h1).into();
+    result += (*ctx.h1).into();
     result *= POW_2_32.into();
-    result += byte_swap_u32(*ctx.h2).into();
+    result += (*ctx.h2).into();
     result *= POW_2_32.into();
-    result += byte_swap_u32(*ctx.h3).into();
+    result += (*ctx.h3).into();
     result *= POW_2_32.into();
-    result += byte_swap_u32(*ctx.h4).into();
+    result += (*ctx.h4).into();
     result
 }
 
