@@ -34,3 +34,12 @@ In a .cairo file :
         // Get your hash via function (_as_bytes and _as_u256 also working)
         let hash_array: Array<u32> = ripemd160_context_as_array(@context);
 ```
+
+## Contributing
+
+Tips for gas optimization are welcome.
+
+### Rules for submitting a PR :
+  - Follow [Conventionnal Commits](https://www.conventionalcommits.org)
+  - Ensure all tests pass with `scarb test`
+  - Format the code with `scarb fmt`
