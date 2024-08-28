@@ -40,6 +40,6 @@ In a .cairo file :
 Tips for gas optimization are welcome.
 
 ### Rules for submitting a PR :
-  - Follow [Conventionnal Commits](https://www.conventionalcommits.org)
+  - Follow [Conventionnal Commits](https://www.conventionalcommits.org) rules
   - Ensure all tests pass with `scarb test`
   - Format the code with `scarb fmt`
