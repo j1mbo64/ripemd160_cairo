@@ -1,6 +1,6 @@
 use ripemd160::utils::{
-    POW_2_32, bytes_to_u32_swap, u32_leftrotate, u32_mod_add, u32_mod_add_3,
-    u32_mod_add_4, u32_byte_swap
+    POW_2_32, bytes_to_u32_swap, u32_leftrotate, u32_mod_add, u32_mod_add_3, u32_mod_add_4,
+    u32_byte_swap
 };
 
 const BLOCK_SIZE: u32 = 64;
