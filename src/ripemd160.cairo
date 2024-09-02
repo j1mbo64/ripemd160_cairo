@@ -1,5 +1,5 @@
 use ripemd160::utils::{
-    POW_2_32, POW_2_8, get_pow_2, bytes_to_u32_swap, u32_leftrotate, u32_mod_add, u32_mod_add_3,
+    POW_2_32, bytes_to_u32_swap, u32_leftrotate, u32_mod_add, u32_mod_add_3,
     u32_mod_add_4, u32_byte_swap
 };
 
