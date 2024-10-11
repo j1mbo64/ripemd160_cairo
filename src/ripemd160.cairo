@@ -216,6 +216,8 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, block: @Array<u32>) {
     l5(ref lh2, lh3, ref lh4, lh0, lh1, *block.at(15), 5);
     l5(ref lh1, lh2, ref lh3, lh4, lh0, *block.at(13), 6);
 
+    core::internal::revoke_ap_tracking();
+
     // Right round 1
     r1(ref rh0, rh1, ref rh2, rh3, rh4, *block.at(5), 8);
     r1(ref rh4, rh0, ref rh1, rh2, rh3, *block.at(14), 9);
