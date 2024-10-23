@@ -216,6 +216,8 @@ fn ripemd160_process_block(ref ctx: RIPEMD160Context, block: @Array<u32>) {
     l5(ref lh2, lh3, ref lh4, lh0, lh1, *block.at(15), 5);
     l5(ref lh1, lh2, ref lh3, lh4, lh0, *block.at(13), 6);
 
+    // Ensure calculation of `left` is kept as local and not as temporary when compiling Sierra to
+    // CASM with `inlining-strategy = "avoid`.
     core::internal::revoke_ap_tracking();
 
     // Right round 1
