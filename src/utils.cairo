@@ -1,3 +1,6 @@
+use core::num::traits::OverflowingAdd;
+use core::num::traits::OverflowingMul;
+
 pub(crate) const POW_2_32: u64 = 0x100000000;
 pub(crate) const POW_2_8: u32 = 256;
 
@@ -40,25 +43,26 @@ pub(crate) fn get_pow_2(n: u32) -> u32 {
 }
 
 pub(crate) fn u32_mod_add(a: u32, b: u32) -> u32 {
-    let a: u64 = a.into();
-    let b: u64 = b.into();
-    ((a + b) % POW_2_32).try_into().unwrap()
+    let (res, _) = a.overflowing_add(b);
+    res
 }
 
 pub(crate) fn u32_mod_add_3(a: u32, b: u32, c: u32) -> u32 {
-    let result: u64 = (a.into() + b.into() + c.into()) % POW_2_32;
-    result.try_into().unwrap()
+    let (res, _) = a.overflowing_add(b);
+    let (res, _) = res.overflowing_add(c);
+    res
 }
 
 pub(crate) fn u32_mod_add_4(a: u32, b: u32, c: u32, d: u32) -> u32 {
-    let result: u64 = (a.into() + b.into() + c.into() + d.into()) % POW_2_32;
-    result.try_into().unwrap()
+    let (res, _) = a.overflowing_add(b);
+    let (res, _) = res.overflowing_add(c);
+    let (res, _) = res.overflowing_add(d);
+    res
 }
 
 pub(crate) fn u32_mod_mul(a: u32, b: u32) -> u32 {
-    let a: u64 = a.into();
-    let b: u64 = b.into();
-    ((a * b) % POW_2_32).try_into().unwrap()
+    let (res, _) = a.overflowing_mul(b);
+    res
 }
 
 pub(crate) fn u32_leftrotate(x: u32, n: u32) -> u32 {
